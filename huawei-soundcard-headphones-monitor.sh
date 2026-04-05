@@ -21,8 +21,9 @@ set -e
 pidof -o %PPID -x $0 >/dev/null && echo "Script $0 already running" && exit 1
 
 # Проверяем наличие всех необходимых инструментов
+# Проверяем наличие только критически важных аппаратных инструментов ALSA
 check_dependencies() {
-    local deps=("hda-verb" "amixer" "alsactl" "pacmd")
+    local deps=("hda-verb" "amixer" "alsactl")
     for cmd in "${deps[@]}"; do
         if ! command -v "$cmd" >/dev/null 2>&1; then
             echo "Необходимая утилита '$cmd' не найдена в системе." >&2
