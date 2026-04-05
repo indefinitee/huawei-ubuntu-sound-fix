@@ -1,9 +1,11 @@
 [Unit]
 Description=Huawei soundcard headphones monitor
+After=sound.target
 
 [Service]
 ExecStart=/usr/local/bin/huawei-soundcard-headphones-monitor.sh
 Restart=always
+RestartSec=3
 User=root
 
 [Install]
