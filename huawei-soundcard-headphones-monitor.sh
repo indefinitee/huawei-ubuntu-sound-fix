@@ -20,6 +20,19 @@ set -e
 # ensures script can run only once at a time
 pidof -o %PPID -x $0 >/dev/null && echo "Script $0 already running" && exit 1
 
+# Проверяем наличие всех необходимых инструментов
+check_dependencies() {
+    local deps=("hda-verb" "amixer" "alsactl" "pacmd")
+    for cmd in "${deps[@]}"; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            echo "Необходимая утилита '$cmd' не найдена в системе." >&2
+            exit 1
+        fi
+    done
+}
+
+check_dependencies
+
 function get_sound_card_index() {
     local index=$(cat /proc/asound/cards | grep -i "sof-hda-dsp" | head -n1 | grep -Eo "^\s*[0-9]+")
     # remove leading white spaces
